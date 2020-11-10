@@ -1,6 +1,6 @@
 using DatingApp.API.Data;
 using DatingApp.API.Dtos;
-using DatingApp.API.Models;
+using DatingApp.API.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -34,7 +34,7 @@ namespace DatingApp.API.Controllers
             if (await _repo.UserExists(userForRegisterDto.Username))
                 return BadRequest("Username already exists");
 
-            var userToCreate = new User
+            var userToCreate = new AppUser
             {
                 Username = userForRegisterDto.Username
             };
