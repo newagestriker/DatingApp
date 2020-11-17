@@ -1,20 +1,70 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">Dating App</a>
+  <a class="navbar-brand" routerLink="/" routerLinkActive="active"
+    >Dating App</a
+  >
 
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Matches</a>
+  <ul class="navbar-nav mr-auto">
+    <ng-container *ngIf="this.accountService.currentUser$ | async">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/members" routerLinkActive="active"
+          >Matches</a
+        >
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Lists</a>
+        <a class="nav-link" routerLink="/lists" routerLinkActive="active"
+          >Lists</a
+        >
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Messages</a>
+        <a class="nav-link" routerLink="/messages" routerLinkActive="active"
+          >Messages</a
+        >
       </li>
-    </ul>
-    <form #loginForm="ngForm" (ngSubmit)="login()" class="form-inline my-2 my-lg-0">
-      <input  class="form-control mr-sm-2" type="text" name="username" placeholder="Username" required [(ngModel)]="model.username">
-      <input class="form-control mr-sm-2" type="password" name="password" placeholder="Password" required [(ngModel)]="model.password">
-      <button [disabled]= "!loginForm.valid" class="btn btn-success my-2 my-sm-0" type="submit">Login</button>
-    </form>
+    </ng-container>
+  </ul>
+  <div
+    *ngIf="this.accountService.currentUser$ | async as user"
+    dropdown
+    class="dropdown"
+  >
+    <span dropdownToggle class="dropdown-toggle text-light"
+      >Welcome {{ user.username | titlecase }}</span
+    >
+    <div class="dropdown-menu mt-3" *dropdownMenu>
+      <a href="#" class="dropdown-item">Edit Profile</a>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" (click)="logout()">Logout</a>
+    </div>
+  </div>
+  <form
+    *ngIf="(this.accountService.currentUser$ | async) === null"
+    #loginForm="ngForm"
+    class="form-inline my-2 my-lg-0"
+    autocomplete="off"
+    (ngSubmit)="login()"
+  >
+    <input
+      class="form-control mr-sm-2"
+      type="text"
+      name="username"
+      placeholder="Username"
+      required
+      [(ngModel)]="model.username"
+    />
+    <input
+      class="form-control mr-sm-2"
+      type="password"
+      name="password"
+      placeholder="Password"
+      required
+      [(ngModel)]="model.password"
+    />
+    <button
+      [disabled]="!loginForm.valid"
+      class="btn btn-success my-2 my-sm-0"
+      type="submit"
+    >
+      Login
+    </button>
+  </form>
 </nav>
